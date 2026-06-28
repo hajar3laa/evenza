@@ -41,7 +41,6 @@ export const register = async (req, res) => {
 
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
-   const verificationToken = crypto.randomBytes(32).toString("hex");
 
 const user = await User.create({
   name,
