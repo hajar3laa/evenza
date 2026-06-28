@@ -39,41 +39,41 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const verificationToken =
-      crypto.randomBytes(32).toString("hex");
+    const verificationToken = crypto.randomBytes(32).toString("hex");
 
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      role: role || "user",
-      isVerified: false,
-      verificationToken,
-    });
+   const verificationToken = crypto.randomBytes(32).toString("hex");
 
-    const verifyUrl =
-      `http://localhost:5000/api/auth/verify/${verificationToken}`;
+const user = await User.create({
+  name,
+  email,
+  password: hashedPassword,
+  role: role || "user",
+  isVerified: false,
+  verificationToken,
+});
 
-    await sendEmail(
+const verifyUrl = `${process.env.SERVER_URL}/api/auth/verify/${verificationToken}`;
+
+await sendEmail(
   user.email,
   "Verify your email",
   `Click here to verify your account:\n${verifyUrl}`
 );
 
+return res.status(201).json({
+  success: true,
+  message: "Registration successful. Please verify your email.",
+});
 
-    res.status(201).json({
-      success: true,
-      message:
-        "Registration successful. Please verify your email.",
-    });
   } catch (error) {
-    res.status(500).json({
+    console.error("Register Error:", error);
+
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
-
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;

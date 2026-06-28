@@ -36,10 +36,10 @@ const options = {
       description: "DEPI Project API",
     },
     servers: [
-      {
-        url: "http://localhost:5000",
-      },
-    ],
+  {
+    url: process.env.SERVER_URL || "http://localhost:5000",
+  },
+],
   },
   apis: ["./src/routes/*.js"],
 };

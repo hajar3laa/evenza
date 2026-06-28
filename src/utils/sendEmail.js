@@ -17,6 +17,26 @@
 //     text,
 //   });
 // };
+// import nodemailer from "nodemailer";
+
+// const transporter = nodemailer.createTransport({
+//   host: "smtp-relay.brevo.com",
+//   port: 587,
+//   secure: false,
+//   auth: {
+//     user: process.env.BREVO_LOGIN,
+//     pass: process.env.BREVO_SMTP_KEY,
+//   },
+// });
+
+// export const sendEmail = async (to, subject, text) => {
+//   await transporter.sendMail({
+//     from: process.env.EMAIL_USER,
+//     to,
+//     subject,
+//     text,
+//   });
+// };
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
@@ -30,10 +50,17 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async (to, subject, text) => {
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to,
-    subject,
-    text,
-  });
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to,
+      subject,
+      text,
+    });
+
+    console.log("Email sent successfully");
+  } catch (error) {
+    console.error("EMAIL ERROR:", error);
+    throw error;
+  }
 };
